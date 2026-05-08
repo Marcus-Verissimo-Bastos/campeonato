@@ -14,7 +14,7 @@
 
 Clone o repositório:
 ```bash
-git clone https://github.com/seu-usuario/campeonato.git
+git clone https://github.com/Marcus-Verissimo-Bastos/campeonato.git
 cd campeonato
 ```
 
