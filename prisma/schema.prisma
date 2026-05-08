@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id    Int     @id @default(autoincrement())
+  nome String
+  dataCriacao  DateTime @default(now())
+  campeonatos Campeonato[]
+  times Time[] @relation("TimeCriador")
+}
+
+model Campeonato {
+  id    Int     @id @default(autoincrement())
+  nome String
+  dataCriacao  DateTime @default(now())
+  idCriador Int
+  criador Usuario @relation(fields: [idCriador], references: [id])
+  times Time[]
+  partidas Partida[]
+}
+
+model Time {
+  id    Int     @id @default(autoincrement())
+  nome String
+  dataCriacao  DateTime @default(now())
+  idCampeonato Int
+  campeonato Campeonato @relation(fields: [idCampeonato], references: [id])
+  idCriador Int
+  idUsuarioCriador Usuario @relation("TimeCriador", fields: [idCriador], references: [id])
+  partidasCasa Partida[] @relation("TimeCasa")
+  partidasVisitante Partida[] @relation("TimeVisitante") 
+}
+
+model Partida {
+  id    Int     @id @default(autoincrement())
+  idCampeonato Int
+  timeCampeonato Campeonato @relation(fields: [idCampeonato], references: [id])
+  idTimeCasa Int
+  TimeCasa Time @relation("TimeCasa", fields: [idTimeCasa], references: [id])
+  idTimeVisitante Int
+  TimeVisitante Time @relation("TimeVisitante", fields: [idTimeVisitante], references: [id])
+  golsTimeCasa Int @default(0)
+  golsTimeVisitante Int @default(0)
+  status String
+  dataPartida DateTime
+}
